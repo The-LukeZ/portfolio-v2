@@ -8,5 +8,5 @@ import cloudflare from "@astrojs/cloudflare";
 // https://astro.build/config
 export default defineConfig({
   integrations: [svelte({ extensions: [".svelte"] })],
-  adapter: cloudflare(),
+  adapter: cloudflare({ imageService: "cloudflare" }),
 });
