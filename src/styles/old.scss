@@ -1,0 +1,528 @@
+@use "sass:map";
+@use "sass:color";
+
+// Color palette
+$colors: (
+  primary-bg: oklch(14.479% 0.00002 271.152),
+  secondary-bg: oklch(21.779% 0.00002 271.152),
+  accent: oklch(75.053% 0.17907 58.273),
+  accent-hover: oklch(80.357% 0.16873 73.344),
+  text-primary: white,
+  text-secondary: oklch(80% 0 271),
+  border: oklch(32% 0 271)
+);
+
+// Derived colors
+$accent-background: color.change(map.get($colors, accent), $alpha: 0.1);
+$nav-overlay: oklch(0% 0 0 / 0.3);
+$mobile-overlay: oklch(0% 0 0 / 0.5);
+
+// Layout
+$nav-height: 60px;
+$mobile-breakpoint: 700px;
+$max-width: 1200px;
+
+// Mixins
+@mixin center-content {
+  max-width: $max-width;
+  margin: 0 auto;
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin transition($properties: all, $duration: 0.3s, $timing: ease-in-out) {
+  transition: $properties $duration $timing;
+}
+
+@mixin hover-lift {
+  @include transition(transform);
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+@mixin mobile {
+  @media screen and (max-width: $mobile-breakpoint) {
+    @content;
+  }
+}
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: no-preference) {
+    @content;
+  }
+}
+
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  @include transition();
+}
+
+// Base styles
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family:
+    "Poppins",
+    "Inter",
+    Roboto,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: map.get($colors, primary-bg);
+  color: map.get($colors, text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+.no-select {
+  user-select: none;
+}
+
+// Background
+#bg-image {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: {
+    size: cover;
+    position: center;
+    repeat: no-repeat;
+  }
+  object-fit: cover;
+  backdrop-filter: blur(0.75vh);
+  filter: blur(0.75vh);
+  box-shadow: 0 0 200px rgba(0, 0, 0, 0.99) inset;
+  z-index: -1;
+}
+
+// Navigation
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $nav-height;
+  background: $nav-overlay;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid map.get($colors, border);
+  z-index: 1000;
+  padding: 0.5rem 1.5rem;
+  @include flex-center;
+
+  .nav-container {
+    @include center-content;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .mobile-menu-btn {
+      @include button-base;
+      background: none;
+      border: 1px solid map.get($colors, border);
+      color: map.get($colors, text-primary);
+      font-size: 1.5rem;
+      margin-left: auto;
+      padding: 0.5rem;
+      display: none;
+
+      @include mobile {
+        display: flex;
+      }
+    }
+  }
+
+  .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: map.get($colors, accent);
+    text-decoration: none;
+    @include transition(color, 150ms);
+
+    &:hover {
+      color: map.get($colors, accent-hover);
+    }
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    gap: 2rem;
+    @include transition((transform, opacity));
+
+    @include mobile {
+      transform: translateX(200%);
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+    }
+
+    a {
+      color: map.get($colors, text-secondary);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.075rem;
+      @include transition(color);
+
+      &:hover {
+        color: map.get($colors, accent);
+      }
+    }
+  }
+}
+
+// Mobile menu
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 300px;
+  height: 100vh;
+  background: map.get($colors, secondary-bg);
+  @include transition(right, 250ms);
+  z-index: 1001;
+  padding: 2rem;
+
+  &.open {
+    right: 0;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    color: map.get($colors, text-primary);
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+
+  .mobile-nav-links {
+    list-style: none;
+    margin-top: 3rem;
+
+    li {
+      margin-bottom: 1.5rem;
+    }
+
+    a {
+      display: block;
+      width: 100%;
+      color: map.get($colors, text-primary);
+      text-decoration: none;
+      font-size: 1.2rem;
+      font-weight: 500;
+      @include transition(color);
+
+      &:hover {
+        color: map.get($colors, accent);
+      }
+    }
+  }
+}
+
+.mobile-overlay {
+  position: fixed;
+  inset: 0;
+  background: $mobile-overlay;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  @include transition((opacity, visibility));
+
+  &.open {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+// Language select
+.language-select {
+  @include button-base;
+  appearance: none;
+  background: map.get($colors, secondary-bg);
+  border: 1px solid map.get($colors, border);
+  padding: 0.5rem 1rem;
+  color: map.get($colors, text-primary);
+  font-size: 1rem;
+  width: 100%;
+  @include transition(all, 200ms);
+
+  &:hover {
+    border-color: map.get($colors, accent);
+    background: $accent-background;
+  }
+
+  option {
+    background: map.get($colors, secondary-bg);
+    color: map.get($colors, text-primary);
+    width: fit-content;
+  }
+}
+
+// Main content
+main {
+  margin-top: $nav-height;
+}
+
+// Section base
+.section {
+  padding: 5rem 2rem;
+  @include center-content;
+
+  @include mobile {
+    padding: 3rem 1rem;
+  }
+
+  .section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    color: map.get($colors, accent);
+    margin-bottom: 1rem;
+
+    @include mobile {
+      font-size: 2rem;
+    }
+  }
+
+  &:not(:has(.section-description)) {
+    .section-title {
+      margin-bottom: 3rem;
+
+      @include mobile {
+        margin-bottom: 2rem;
+      }
+    }
+  }
+
+  .section-description {
+    font-size: 1.2rem;
+    color: map.get($colors, text-secondary);
+    text-align: center;
+    margin-bottom: 3rem;
+
+    @include mobile {
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+  }
+}
+
+// Hero section
+.hero {
+  min-height: 100vh;
+  @include flex-center;
+  text-align: center;
+
+  .hero-content {
+    max-width: 800px;
+
+    h1 {
+      font-size: 4rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, map.get($colors, text-primary) 0%, map.get($colors, accent) 60%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+
+      @include mobile {
+        font-size: 2.5rem;
+      }
+    }
+
+    .subtitle {
+      font-size: 1.5rem;
+      color: map.get($colors, text-secondary);
+      margin-bottom: 2rem;
+
+      @include mobile {
+        font-size: 1.2rem;
+      }
+    }
+
+    .cta-button {
+      @include button-base;
+      @include hover-lift;
+      background: map.get($colors, accent);
+      color: map.get($colors, primary-bg);
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      font-weight: 600;
+
+      &:hover {
+        background: map.get($colors, accent-hover);
+      }
+    }
+  }
+}
+
+// About section
+.about {
+  background: map.get($colors, secondary-bg);
+
+  .about-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+
+    p {
+      text-wrap: balance;
+      font-size: 1.2rem;
+      color: map.get($colors, text-secondary);
+      line-height: 1.8;
+    }
+  }
+}
+
+// Projects section
+.projects {
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .project-card {
+    background: map.get($colors, secondary-bg);
+    border: 1px solid map.get($colors, border);
+    border-radius: 12px;
+    padding: 2rem;
+    @include transition();
+    display: flex;
+    flex-direction: column;
+
+    &:hover {
+      transform: translateY(-5px);
+      border-color: map.get($colors, accent);
+      box-shadow: 0 10px 30px $accent-background;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: map.get($colors, accent);
+    }
+
+    p {
+      color: map.get($colors, text-secondary);
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    .project-link {
+      @include button-base;
+      gap: 0.5rem;
+      color: map.get($colors, accent);
+      margin-top: auto;
+
+      &:hover {
+        color: map.get($colors, accent-hover);
+      }
+
+      @include mobile {
+        font-size: 1rem;
+      }
+    }
+  }
+}
+
+// Social section
+.social {
+  background: map.get($colors, secondary-bg);
+
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+
+    .social-link {
+      @include button-base;
+      @include hover-lift;
+      gap: 0.5rem;
+      padding: 1rem 1.5rem;
+      background: map.get($colors, primary-bg);
+      border: 1px solid map.get($colors, border);
+      border-radius: 50px;
+      color: map.get($colors, text-primary);
+
+      &:hover {
+        border-color: map.get($colors, accent);
+        background: $accent-background;
+      }
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+}
+
+// Footer
+.footer {
+  background-color: map.get($colors, primary-bg);
+  text-align: center;
+  padding: 2rem;
+  border-top: 1px solid map.get($colors, border);
+  color: map.get($colors, text-secondary);
+}
+
+// Animation classes
+@include reduced-motion {
+  .fade-in {
+    opacity: 0;
+    @include transition(opacity, 400ms, ease-in-out);
+
+    &.in-view {
+      opacity: 1;
+    }
+  }
+
+  .scale-up {
+    transform: scale(0.7);
+    @include transition(transform, 400ms, ease-in-out);
+
+    &.in-view {
+      transform: scale(1);
+    }
+  }
+}
+
+// Utility classes
+.font-inter {
+  font-family:
+    "Inter",
+    Roboto,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
