@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
+  import type { ClassValue } from "svelte/elements";
 
   interface Props {
     type?: "button" | "submit" | "reset";
@@ -7,7 +8,9 @@
     variant?: "primary" | "accent" | "subtle";
     disabled?: boolean;
     href?: string;
+    target?: "_blank" | "_self" | "_parent" | "_top";
     children: Snippet;
+    class?: ClassValue;
   }
 
   let {
@@ -16,22 +19,31 @@
     variant = "primary",
     disabled = false,
     href,
+    target,
+    class: className,
     children,
   }: Props = $props();
 </script>
 
 {#if href}
   <a
-    class="button {variant} {disabled ? 'disabled' : ''}"
+    class="button {variant} {disabled ? 'disabled' : ''} {className}"
     href={disabled ? undefined : href}
     onclick={onClick}
+    {target}
     tabindex={disabled ? -1 : 0}
+    aria-disabled={disabled}
   >
-    {@render children()}
+    {@render children?.()}
   </a>
 {:else}
-  <button class="button {variant}" {type} onclick={onClick} {disabled}>
-    {@render children()}
+  <button
+    class="button {variant} {disabled ? 'disabled' : ''} {className}"
+    {type}
+    onclick={onClick}
+    {disabled}
+  >
+    {@render children?.()}
   </button>
 {/if}
 
@@ -53,42 +65,42 @@
   }
 
   .button.primary {
-    background-color: var(--color-secondary-bg);
-    color: var(--color-text-primary);
-    border-color: var(--color-border);
+    background-color: var(--secondary-bg);
+    color: var(--text-primary);
+    border-color: var(--border);
   }
 
   .button.primary:hover:not(.disabled) {
-    border-color: var(--color-accent);
+    border-color: var(--accent);
     transform: translateY(-2px);
-    background-color: color-mix(in oklch, var(--color-accent) 25%, black);
+    background-color: mix(in oklch, var(--accent) 25%, black);
   }
 
   .button.accent {
-    background-color: var(--color-accent);
-    color: var(--color-primary-bg);
-    border-color: var(--color-accent);
+    background-color: var(--accent);
+    color: var(--primary-bg);
+    border-color: var(--accent);
   }
 
   .button.accent:hover:not(.disabled) {
-    background-color: var(--color-accent-hover);
-    border-color: var(--color-accent-hover);
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
     transform: translateY(-2px);
   }
 
   .button.subtle {
     background-color: transparent;
-    color: var(--color-text-secondary);
+    color: var(--text-secondary);
     border-color: transparent;
   }
 
   .button.subtle:hover:not(.disabled) {
-    color: var(--color-accent);
-    background-color: var(--color-secondary-bg);
+    color: var(--accent);
+    background-color: var(--secondary-bg);
   }
 
   .button:focus-visible {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
 

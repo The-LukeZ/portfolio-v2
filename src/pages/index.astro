@@ -1,5 +1,10 @@
 ---
+import MusicModal from "../components/MusicModal.svelte";
+import Collapsible from "../components/Collapsible.svelte";
 import Layout from "../layouts/Layout.astro";
+import ExternalLink from "../components/assets/ExternalLink.svelte";
+import Button from "../components/Button.svelte";
+import { projects } from "../lib/projects";
 ---
 
 <Layout title="Home">
@@ -11,6 +16,54 @@ import Layout from "../layouts/Layout.astro";
         No, your browser isn't broken, it is supposed to be this minimalistic.
         Everything in the web feels so bloated...
       </p>
+    </section>
+    <section class="section" id="about">
+      <h2>About Me</h2>
+      <p>
+        Hey, I'm LukeZ (or just Luca), a developer who’s kinda obsessed with
+        building web apps that actually feel nice to use and solve real
+        problems.
+      </p>
+      <p>
+        I'm somewhere around 21+, based in Germany, and I basically live for
+        coding, gaming, and music (music is non-negotiable, it’s blasting 24/7).
+      </p>
+      <p>
+        At work I’m stuck with Vue, Swift, WordPress, and the eternal pain of
+        PHP most days. Send help.
+      </p>
+      <p>
+        In my free time though, you’ll find me happily messing around with
+        TypeScript and SvelteKit, those are my comfort zone. Still, I’ve got a
+        massive itch to finally dive properly into Rust and Go - They’ve been
+        sitting in my "I’ll learn this next" list for way too long...
+      </p>
+
+      <MusicModal client:load />
+    </section>
+    <section class="section" id="projects">
+      <h2>Projects</h2>
+      <p>I've already made a few cool things...</p>
+
+      {
+        projects.map((project) => (
+          <Collapsible title={project.title} client:load>
+            <p>{project.description}</p>
+            <p>
+              <Button
+                variant="subtle"
+                href={project.link}
+                target="_blank"
+                class="w-fit"
+                client:load
+              >
+                <ExternalLink />
+                Visit {project.title}
+              </Button>
+            </p>
+          </Collapsible>
+        ))
+      }
     </section>
   </main>
 </Layout>

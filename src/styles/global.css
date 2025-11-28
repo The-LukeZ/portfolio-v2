@@ -343,6 +343,17 @@
   .inline-flex {
     display: inline-flex;
   }
+
+  .text-accent {
+    color: var(--accent);
+
+    &:hover {
+      color: var(--accent-hover);
+    }
+  }
+  .w-fit {
+    width: fit-content;
+  }
 }
 
 @layer animations {

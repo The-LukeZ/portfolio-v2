@@ -4,15 +4,11 @@
   import Button from "./Button.svelte";
 
   let {
-    buttonText = "",
     isOpen = $bindable(false),
     onClose,
-    children,
   }: {
-    buttonText?: string;
     isOpen?: boolean;
     onClose?: () => void;
-    children?: Snippet;
   } = $props();
 
   function closeModal() {
@@ -21,12 +17,10 @@
   }
 </script>
 
-<Button onClick={() => (isOpen = !isOpen)}>
-  {buttonText || "Open Modal"}
-</Button>
+<Button onClick={() => (isOpen = !isOpen)}>Did somebody say Music?</Button>
 
 {#if isOpen}
-  <div  
+  <div
     class="modal-backdrop"
     onclick={closeModal}
     onkeydown={(e) => {
@@ -45,7 +39,16 @@
       transition:scale={{ duration: 200, start: 0.95 }}
     >
       <button class="close-btn" onclick={closeModal}>&times;</button>
-      {@render children?.()}
+      <h3>Music is Life</h3>
+      <p>
+        I’m that person who’s always got tunes playing in the background.
+        Whether I’m coding, driving, or doing grocery shopping, music usually
+        plays.<br />
+        My go-to genres are Meavy Metal (especially Power Metal and... yeah specific
+        stuff), Country (plus sub-genres) and basically anything with a good beat.
+        You can check out my Spotify stats here:
+        <a class="text-accent" href="https://stats.fm/lukez" target="_blank">stats.fm/lukez</a>
+      </p>
     </div>
   </div>
 {/if}
