@@ -1,7 +1,7 @@
 ---
 // src/layouts/Layout.astro
 import "../styles/global.css";
-import Menu from "@lucide/astro/icons/menu";
+import Menu from "../components/assets/Menu.svelte";
 
 interface Props {
   title?: string;
@@ -24,18 +24,13 @@ let language = Astro.currentLocale || "en";
   <body>
     <nav class="nav no-select">
       <div class="nav-container">
-        <a href="/" class="logo font-inter">LukeZ</a>
+        <a href="/" class="logo">LukeZ</a>
 
-        <button
-          class="mobile-menu-btn"
-          aria-label="Toggle mobile menu"
-        >
+        <button class="mobile-menu-btn" aria-label="Toggle mobile menu">
           <Menu />
         </button>
 
-        <ul class="nav-links">
-          
-        </ul>
+        <ul class="nav-links"></ul>
       </div>
     </nav>
     <slot />

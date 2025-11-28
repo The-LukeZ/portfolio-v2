@@ -17,9 +17,6 @@ importers:
       '@fontsource/poppins':
         specifier: ^5.2.7
         version: 5.2.7
-      '@lucide/astro':
-        specifier: ^0.555.0
-        version: 0.555.0(astro@5.16.2(@types/node@24.10.1)(rollup@4.53.3)(typescript@5.9.3))
       astro:
         specifier: ^5.16.2
         version: 5.16.2(@types/node@24.10.1)(rollup@4.53.3)(typescript@5.9.3)
@@ -708,11 +705,6 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
-
-  '@lucide/astro@0.555.0':
-    resolution: {integrity: sha512-8PxaTAT01/yzsI6Y3udGhBLf3JVjB7J9+8NwurliGufJAfxlKtjSO7rk2EQx9fMj60UstCTO9AlD7QAUBNMg1A==}
-    peerDependencies:
-      astro: ^4 || ^5
 
   '@oslojs/encoding@1.1.0':
     resolution: {integrity: sha512-70wQhgYmndg4GCPxPPxPGevRKqTIJ2Nh4OkiMWmDAVYsTQ+Ta7Sq+rPevXyXGdzr30/qZBnyOalCszoMxlyldQ==}
@@ -2562,10 +2554,6 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
-
-  '@lucide/astro@0.555.0(astro@5.16.2(@types/node@24.10.1)(rollup@4.53.3)(typescript@5.9.3))':
-    dependencies:
-      astro: 5.16.2(@types/node@24.10.1)(rollup@4.53.3)(typescript@5.9.3)
 
   '@oslojs/encoding@1.1.0': {}
 

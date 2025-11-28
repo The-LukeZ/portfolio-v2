@@ -5,4 +5,4 @@ title: Legal Notice
 
 # Legal Notice
 
-asd
+Hello, this is a placeholder.
