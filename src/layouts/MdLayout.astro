@@ -1,0 +1,29 @@
+---
+// src/layouts/MdLayout.astro
+import type { MarkdownLayoutProps } from "astro";
+import "../styles/global.css";
+
+type Props = MarkdownLayoutProps<{
+  title: string;
+}>;
+
+const { frontmatter } = Astro.props;
+
+let finalTitle = frontmatter.title
+  ? `LukeZ Development | ${frontmatter.title}`
+  : "LukeZ Development";
+let language = Astro.currentLocale || "en";
+---
+
+<html lang={language}>
+  <head>
+    <title>{finalTitle}</title>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
